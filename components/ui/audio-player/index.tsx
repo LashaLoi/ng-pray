@@ -45,9 +45,7 @@ export function AudioPlayer({ src, title, className, ref }: AudioPlayerProps) {
   const [showVolume, setShowVolume] = useState(false);
 
   return (
-    <div
-      className={cn("flex w-full max-w-md flex-col gap-3 px-4 py-3", className)}
-    >
+    <div className={cn("flex w-full max-w-md flex-col gap-3", className)}>
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <div className="truncate text-sm font-medium text-foreground">
@@ -59,19 +57,16 @@ export function AudioPlayer({ src, title, className, ref }: AudioPlayerProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          {isReady ? (
-            <Button
-              size="icon"
-              variant="secondary"
-              type="button"
-              onClick={togglePlayPause}
-              aria-label={isPlaying ? "Pause audio" : "Play audio"}
-            >
-              {isPlaying ? <Pause /> : <Play />}
-            </Button>
-          ) : (
-            <Loader size="sm" />
-          )}
+          <Button
+            disabled={!isReady}
+            size="icon"
+            variant="secondary"
+            type="button"
+            onClick={togglePlayPause}
+            aria-label={isPlaying ? "Pause audio" : "Play audio"}
+          >
+            {!isReady ? <Loader size="sm" /> : isPlaying ? <Pause /> : <Play />}
+          </Button>
 
           <Button
             size="icon"

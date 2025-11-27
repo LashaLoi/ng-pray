@@ -1,15 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { createStore, createEvent, createEffect, sample } from "effector";
 import { useUnit } from "effector-react";
 
-const localStorageKey = "timerSeconds";
+import { getCount, saveCount } from "@/api";
 
 // timer state
-
 export const getTimerStateFX = createEffect(async () => {
-  await new Promise((res) => setTimeout(res, 1000));
+  const data = await getCount();
 
-  return Number(localStorage.getItem(localStorageKey)) ?? 0;
+  return data ? Number(data.count) : 0;
 });
 
 export const addSecond = createEvent();
@@ -20,7 +20,11 @@ export const $timerStateSeconds = createStore(0)
 
 export const useTimerStateSeconds = () => useUnit($timerStateSeconds);
 export const useTimerStateQuery = () =>
-  useQuery({ queryKey: ["timerState"], queryFn: () => getTimerStateFX() });
+  useQuery({
+    queryKey: ["timerState"],
+    queryFn: () => getTimerStateFX(),
+    refetchOnWindowFocus: false,
+  });
 
 // timer status
 
@@ -43,7 +47,5 @@ sample({
   clock: $timerStatus,
   source: $timerStateSeconds,
   filter: (_, status) => status === "paused",
-  fn: (state) => {
-    localStorage.setItem(localStorageKey, state.toString());
-  },
+  fn: (state) => saveCount(state.toString()),
 });

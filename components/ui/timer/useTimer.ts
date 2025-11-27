@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import {
-  useTimerStateQuery,
   useTimerStateSeconds,
   useIsTimerRunning,
   addSecond,
@@ -8,8 +7,6 @@ import {
 } from "./store";
 
 export const useTimer = () => {
-  const { isPending } = useTimerStateQuery();
-
   const seconds = useTimerStateSeconds();
   const isRunning = useIsTimerRunning();
 
@@ -30,7 +27,6 @@ export const useTimer = () => {
   }, []);
 
   return {
-    isPending,
     seconds,
     isRunning,
   };

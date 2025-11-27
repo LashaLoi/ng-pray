@@ -3,7 +3,7 @@
 import { Pause, Play } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Loader } from "@/components/ui/loader";
+
 import { cn, formatTime } from "@/lib/utils";
 
 import { toggleTimerStatus } from "./store";
@@ -14,13 +14,13 @@ type TimerProps = {
 };
 
 export const Timer: React.FC<TimerProps> = () => {
-  const { isPending, isRunning, seconds } = useTimer();
-
-  if (isPending) return <Loader size="lg" />;
+  const { isRunning, seconds } = useTimer();
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="text-sm font-medium text-muted-foreground">Pray time</div>
+      <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+        Pray time
+      </div>
       <div
         className={cn(
           "font-mono text-4xl tabular-nums text-foreground",
